@@ -7,7 +7,9 @@ const path = require("path");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+if (process.env.NODE_ENV === "DEVELOPMENT") {
+  app.use(cors());
+}
 
 //database connection
 mongoose.connect(process.env.DB_CONNECT, {
@@ -24,7 +26,7 @@ db.once("open", function () {
 
 const authRoute = require("./routes/auth");
 
-app.use("/api/auth/", authRoute);
+app.use("/api/auth", authRoute);
 
 
 if (process.env.NODE_ENV === "PRODUCTION") {
